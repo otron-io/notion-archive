@@ -34,7 +34,7 @@
 ```bash
 # Create new repo on GitHub: notion-archive
 # Clone locally and add files
-git clone https://github.com/yourusername/notion-archive.git
+git clone https://github.com/otron-io/notion-archive.git
 cd notion-archive
 
 # Copy all files from current directory

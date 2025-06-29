@@ -1,5 +1,8 @@
 # Notion Archive
 
+[![PyPI version](https://badge.fury.io/py/notion-archive.svg)](https://badge.fury.io/py/notion-archive)
+[![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
+
 A simple Python library for adding semantic search to Notion HTML exports.
 
 ## What is Notion Archive?
