@@ -20,16 +20,24 @@ Notion Archive parses your exported Notion workspace and adds AI-powered search 
 pip install notion-archive
 ```
 
-## Basic Usage
+## How to use it
 
+### 1. Export your Notion workspace
+1. In Notion, go to Settings & Members → Settings
+2. Click "Export all workspace content"
+3. Choose "HTML" format (not Markdown)
+4. Download and unzip the file
+5. You'll get a folder like `Export-abc123.../`
+
+### 2. Use the library
 ```python
 from notion_archive import NotionArchive
 
 # Initialize 
 archive = NotionArchive(embedding_model="text-embedding-3-large")
 
-# Add your exported Notion folder
-archive.add_export('./path/to/notion/export')
+# Point to your unzipped export folder
+archive.add_export('./Export-abc123-def456-etc')
 
 # Generate embeddings (this costs money with OpenAI)
 archive.build_index()
@@ -91,6 +99,14 @@ stats = archive.get_stats()
 - Python 3.8+
 - A Notion workspace exported as HTML
 - OpenAI API key if using OpenAI models
+
+## Common issues
+
+**"No documents found"** - Make sure you exported as HTML, not Markdown, and pointed to the unzipped folder.
+
+**"OpenAI API error"** - Set your API key: `export OPENAI_API_KEY=sk-your-key-here`
+
+**"Memory error"** - Large workspaces need lots of RAM. Try using a smaller embedding model or chunking your export.
 
 ## License
 

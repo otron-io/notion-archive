@@ -1,5 +1,7 @@
 # Release Checklist
 
+**Note: This file is for maintainers only - it tracks what was done to prepare the release. Users don't need this.**
+
 ## Before Creating GitHub Repository
 
 ### 1. ✅ Clean Repository
