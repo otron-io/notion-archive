@@ -40,7 +40,7 @@ setup(
     version="0.1.0",
     author="Notion Archive Contributors",
     author_email="hello@notion-archive.com",
-    description="Transform Notion exports into searchable knowledge bases using AI embeddings",
+    description="Simple semantic search for Notion HTML exports using AI embeddings",
     long_description=read_readme(),
     long_description_content_type="text/markdown",
     url="https://github.com/otron-io/notion-archive",
