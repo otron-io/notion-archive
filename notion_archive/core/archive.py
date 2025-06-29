@@ -97,8 +97,13 @@ class NotionArchive:
         Args:
             export_path: Path to the Notion export folder
         """
-        if not Path(export_path).exists():
+        export_path = Path(export_path).resolve()  # Resolve to absolute path
+        
+        if not export_path.exists():
             raise ValueError(f"Export path does not exist: {export_path}")
+        
+        if not export_path.is_dir():
+            raise ValueError(f"Export path must be a directory: {export_path}")
         
         print(f"Parsing Notion export: {export_path}")
         parser = NotionExportParser(export_path)
@@ -144,6 +149,11 @@ class NotionArchive:
         
         if not self.documents:
             raise ValueError("No documents to index. Call add_export() first.")
+        
+        # Warn about large workspaces
+        if len(self.documents) > 1000:
+            print(f"⚠️  Warning: Large workspace with {len(self.documents)} documents")
+            print("   This may take a long time and cost significant money with OpenAI models")
         
         print(f"Building index for {len(self.documents)} documents...")
         print(f"Using embedding model: {self.embedding_model.model_name}")
@@ -218,6 +228,15 @@ class NotionArchive:
         
         # Generate embeddings
         print("Generating embeddings...")
+        
+        # Cost warning for OpenAI models
+        if "text-embedding" in self.embedding_model.model_name:
+            total_tokens = sum(len(text.split()) for text in texts)
+            estimated_cost = total_tokens * 0.00001  # Rough estimate
+            if estimated_cost > 1.0:
+                print(f"⚠️  Warning: Estimated OpenAI cost ~${estimated_cost:.2f}")
+                print(f"   Processing {len(texts)} chunks, ~{total_tokens} tokens")
+        
         embeddings = self.embedding_model.encode(texts, show_progress_bar=show_progress)
         
         # Add to ChromaDB

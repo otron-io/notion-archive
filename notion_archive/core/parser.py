@@ -65,6 +65,11 @@ class NotionExportParser:
     def _parse_html_file(self, file_path: Path) -> Optional[NotionDocument]:
         """Parse a single HTML file into a NotionDocument."""
         
+        # Safety check: file size limit (10MB)
+        if file_path.stat().st_size > 10 * 1024 * 1024:
+            print(f"Warning: Skipping large file {file_path.name} ({file_path.stat().st_size / 1024 / 1024:.1f}MB)")
+            return None
+        
         with open(file_path, 'r', encoding='utf-8') as f:
             content = f.read()
         
