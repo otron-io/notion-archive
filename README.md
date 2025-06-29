@@ -3,17 +3,17 @@
 [![PyPI version](https://badge.fury.io/py/notion-archive.svg)](https://badge.fury.io/py/notion-archive)
 [![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
 
-Build apps that can search through your Notion workspace using AI.
+Search your Notion content when you can't access Notion itself.
 
 ## What is Notion Archive?
 
-Notion Archive turns your exported Notion workspace into a searchable knowledge base. Instead of Notion's limited built-in search, you get AI-powered semantic search that understands meaning, not just keywords.
+Notion Archive makes your exported Notion workspace searchable offline. When you can't access the live Notion (due to network issues, leaving a company, account problems, or wanting local access), you can still search through all your content.
 
 **Perfect for:**
-- Building internal tools that search company wikis
-- Creating Notion-powered websites and documentation  
-- Adding "smart search" to chatbots and AI assistants
-- Searching your Notion data from outside Notion
+- Keeping access to company knowledge after leaving a job
+- Offline access to your Notion content
+- Searching Notion data in environments that don't have Notion access
+- Building tools that need to search Notion exports without API access
 
 ## What it does
 
