@@ -111,21 +111,44 @@ class NotionArchive:
         self.documents.extend(new_documents)
         print(f"Added {len(new_documents)} documents from {export_path}")
     
-    def build_index(self, show_progress: bool = True) -> None:
+    def has_index(self) -> bool:
+        """
+        Check if the archive already has an index built.
+        
+        Returns:
+            True if index exists, False otherwise
+        """
+        try:
+            return self.collection.count() > 0
+        except:
+            return False
+    
+    def build_index(self, show_progress: bool = True, force_rebuild: bool = False) -> None:
         """
         Build the search index by generating embeddings for all documents.
         This is the computationally expensive step that should be run once.
         
         Args:
             show_progress: Whether to show progress indicators
+            force_rebuild: If True, rebuild even if index already exists
         """
+        # Check if index already exists
+        try:
+            existing_count = self.collection.count()
+            if existing_count > 0 and not force_rebuild:
+                print(f"Index already exists with {existing_count} documents.")
+                print("Use force_rebuild=True to rebuild, or skip this call to use existing index.")
+                return
+        except Exception as e:
+            print(f"Warning checking existing data: {e}")
+        
         if not self.documents:
             raise ValueError("No documents to index. Call add_export() first.")
         
         print(f"Building index for {len(self.documents)} documents...")
         print(f"Using embedding model: {self.embedding_model.model_name}")
         
-        # Clear existing collection
+        # Clear existing collection if rebuilding
         try:
             existing_count = self.collection.count()
             if existing_count > 0:

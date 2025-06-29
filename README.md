@@ -33,19 +33,27 @@ pip install notion-archive
 ```python
 from notion_archive import NotionArchive
 
-# Initialize 
-archive = NotionArchive(embedding_model="text-embedding-3-large")
+# Initialize with persistent storage
+archive = NotionArchive(
+    embedding_model="text-embedding-3-large",
+    db_path="./my_archive"  # Saves data permanently
+)
 
-# Point to your unzipped export folder
+# Add your export
 archive.add_export('./Export-abc123-def456-etc')
 
-# Generate embeddings (this costs money with OpenAI)
-archive.build_index()
+# Build index (automatically skips if already exists)
+archive.build_index()  # Smart - won't rebuild unnecessarily
 
-# Search
+# Search (always fast after first build)
 results = archive.search("meeting notes")
 for result in results:
     print(f"{result['title']}: {result['content'][:100]}...")
+```
+
+**To force a rebuild:**
+```python
+archive.build_index(force_rebuild=True)  # Rebuilds even if index exists
 ```
 
 ## Embedding Models
@@ -79,13 +87,20 @@ archive = NotionArchive(embedding_model="all-MiniLM-L6-v2")
 
 ```python
 # Initialize
-archive = NotionArchive(embedding_model="model-name")
+archive = NotionArchive(embedding_model="model-name", db_path="./archive_db")
 
 # Add export folder  
 archive.add_export("./path/to/export")
 
-# Build search index
+# Build search index (smart - skips if exists)
 archive.build_index()
+
+# Force rebuild if needed
+archive.build_index(force_rebuild=True)
+
+# Check if index exists
+if archive.has_index():
+    print("Ready to search!")
 
 # Search
 results = archive.search("query", limit=10)
