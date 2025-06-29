@@ -372,3 +372,20 @@ class NotionArchive:
             print("Index cleared successfully")
         except Exception as e:
             print(f"Error clearing index: {e}")
+
+    def deep_research(self, query: str, *, top_k: int = 10, model: Optional[str] = None, openai_api_key: Optional[str] = None) -> str:
+        """Generate a Deep-Research report grounded in this archive.
+
+        This is a thin wrapper around :func:`notion_archive.core.deep_research.deep_research`.
+        See that function for full parameter documentation.
+        """
+        from .deep_research import deep_research as _dr  # local import to avoid heavy deps on startup
+
+        # Delegate to helper and return the final report text.
+        return _dr(
+            archive=self,
+            query=query,
+            top_k=top_k,
+            model=model,
+            openai_api_key=openai_api_key,
+        )
