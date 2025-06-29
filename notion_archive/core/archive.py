@@ -2,7 +2,7 @@
 Main NotionArchive class - the primary interface for the library.
 """
 
-from typing import List, Dict, Any, Optional
+from typing import List, Dict, Any, Optional, Union
 from pathlib import Path
 
 # Third-party imports guarded so that users get a clear error message if the
@@ -105,12 +105,13 @@ class NotionArchive:
                 print(f"Error creating collection: {e}")
                 raise
     
-    def add_export(self, export_path: str) -> None:
+    def add_export(self, export_path: Union[str, Path]) -> None:
         """
         Add a Notion export to the archive.
         
         Args:
-            export_path: Path to the Notion export folder
+            export_path: Path to the Notion export folder. Accepts either a
+                string or a ``pathlib.Path`` instance.
         """
         export_path = Path(export_path).resolve()  # Resolve to absolute path
         
