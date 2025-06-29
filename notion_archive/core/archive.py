@@ -4,8 +4,24 @@ Main NotionArchive class - the primary interface for the library.
 
 from typing import List, Dict, Any, Optional
 from pathlib import Path
-import chromadb
-from langchain.text_splitter import RecursiveCharacterTextSplitter
+
+# Third-party imports guarded so that users get a clear error message if the
+# optional dependency is missing at runtime or during type-checking.
+try:
+    import chromadb  # type: ignore
+except ImportError as exc:  # pragma: no cover – provide helpful guidance
+    raise ImportError(
+        "The 'chromadb' package is required for NotionArchive. Install it via "
+        "`pip install chromadb` (or add it to your requirements)."
+    ) from exc
+
+try:
+    from langchain.text_splitter import RecursiveCharacterTextSplitter  # type: ignore
+except ImportError as exc:  # pragma: no cover
+    raise ImportError(
+        "The 'langchain' package is required for NotionArchive. Install it via "
+        "`pip install langchain` (or add it to your requirements)."
+    ) from exc
 
 from .parser import NotionDocument, NotionExportParser
 from .embeddings import create_embedding_model, EmbeddingModel
