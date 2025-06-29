@@ -3,11 +3,17 @@
 [![PyPI version](https://badge.fury.io/py/notion-archive.svg)](https://badge.fury.io/py/notion-archive)
 [![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
 
-A simple Python library for adding semantic search to Notion HTML exports.
+Build apps that can search through your Notion workspace using AI.
 
 ## What is Notion Archive?
 
-Notion Archive parses your exported Notion workspace and adds AI-powered search using embeddings. It's a basic tool that lets you search through your Notion content using natural language instead of just keywords.
+Notion Archive turns your exported Notion workspace into a searchable knowledge base. Instead of Notion's limited built-in search, you get AI-powered semantic search that understands meaning, not just keywords.
+
+**Perfect for:**
+- Building internal tools that search company wikis
+- Creating Notion-powered websites and documentation  
+- Adding "smart search" to chatbots and AI assistants
+- Searching your Notion data from outside Notion
 
 ## What it does
 
