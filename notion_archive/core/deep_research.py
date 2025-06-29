@@ -39,7 +39,7 @@ except ImportError:  # pragma: no cover – optional dependency
 from .archive import NotionArchive
 
 
-DEFAULT_MODEL = "o4-mini-deep-research-2025-06-26"  # lightweight generally available deep research model
+DEFAULT_MODEL = "gpt-4-1106-preview"  # widely available chat model suitable for research tasks
 
 
 def _format_documents(results: List[dict]) -> str:

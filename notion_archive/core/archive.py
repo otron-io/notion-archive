@@ -121,7 +121,9 @@ class NotionArchive:
             raise ValueError(f"Export path must be a directory: {export_path}")
         
         print(f"Parsing Notion export: {export_path}")
-        parser = NotionExportParser(export_path)
+        # NotionExportParser expects a string path for consistency with earlier
+        # versions; convert the Path object explicitly.
+        parser = NotionExportParser(str(export_path))
         new_documents = parser.parse_export()
         
         if not new_documents:
