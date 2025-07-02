@@ -2,11 +2,26 @@
 Main NotionArchive class - the primary interface for the library.
 """
 
-import os
-from typing import List, Dict, Any, Optional
+from typing import List, Dict, Any, Optional, Union
 from pathlib import Path
-import chromadb
-from langchain.text_splitter import RecursiveCharacterTextSplitter
+
+# Third-party imports guarded so that users get a clear error message if the
+# optional dependency is missing at runtime or during type-checking.
+try:
+    import chromadb  # type: ignore
+except ImportError as exc:  # pragma: no cover – provide helpful guidance
+    raise ImportError(
+        "The 'chromadb' package is required for NotionArchive. Install it via "
+        "`pip install chromadb` (or add it to your requirements)."
+    ) from exc
+
+try:
+    from langchain.text_splitter import RecursiveCharacterTextSplitter  # type: ignore
+except ImportError as exc:  # pragma: no cover
+    raise ImportError(
+        "The 'langchain' package is required for NotionArchive. Install it via "
+        "`pip install langchain` (or add it to your requirements)."
+    ) from exc
 
 from .parser import NotionDocument, NotionExportParser
 from .embeddings import create_embedding_model, EmbeddingModel
@@ -90,12 +105,13 @@ class NotionArchive:
                 print(f"Error creating collection: {e}")
                 raise
     
-    def add_export(self, export_path: str) -> None:
+    def add_export(self, export_path: Union[str, Path]) -> None:
         """
         Add a Notion export to the archive.
         
         Args:
-            export_path: Path to the Notion export folder
+            export_path: Path to the Notion export folder. Accepts either a
+                string or a ``pathlib.Path`` instance.
         """
         export_path = Path(export_path).resolve()  # Resolve to absolute path
         
@@ -106,7 +122,9 @@ class NotionArchive:
             raise ValueError(f"Export path must be a directory: {export_path}")
         
         print(f"Parsing Notion export: {export_path}")
-        parser = NotionExportParser(export_path)
+        # NotionExportParser expects a string path for consistency with earlier
+        # versions; convert the Path object explicitly.
+        parser = NotionExportParser(str(export_path))
         new_documents = parser.parse_export()
         
         if not new_documents:
@@ -372,3 +390,20 @@ class NotionArchive:
             print("Index cleared successfully")
         except Exception as e:
             print(f"Error clearing index: {e}")
+
+    def deep_research(self, query: str, *, top_k: int = 10, model: Optional[str] = None, openai_api_key: Optional[str] = None) -> str:
+        """Generate a Deep-Research report grounded in this archive.
+
+        This is a thin wrapper around :func:`notion_archive.core.deep_research.deep_research`.
+        See that function for full parameter documentation.
+        """
+        from .deep_research import deep_research as _dr  # local import to avoid heavy deps on startup
+
+        # Delegate to helper and return the final report text.
+        return _dr(
+            archive=self,
+            query=query,
+            top_k=top_k,
+            model=model,
+            openai_api_key=openai_api_key,
+        )
